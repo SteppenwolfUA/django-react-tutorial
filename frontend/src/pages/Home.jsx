@@ -1,85 +1,40 @@
-import { useState, useEffect } from "react";
-import api from "../api";
-import Note from "../components/Note"
-import "../styles/Home.css"
+import { useState, useEffect } from 'react';
+import api from '../api';
 
 function Home() {
-    const [notes, setNotes] = useState([]);
-    const [content, setContent] = useState("");
-    const [title, setTitle] = useState("");
+  // we need the state, we keep track of all of the notes
+  // that we have (already grabbed from the server)
 
-    useEffect(() => {
-        getNotes();
-    }, []);
+  //the first thing when we load this page
+  // we send an authorized request to get all of the notes
+  // that we've created
+  const [notes, setNotes] = useState([]);
 
-    const getNotes = () => {
-        api
-            .get("/api/notes/")
-            .then((res) => res.data)
-            .then((data) => {
-                setNotes(data);
-                console.log(data);
-            })
-            .catch((err) => alert(err));
-    };
+  // we then need some state for the form that will be on this page
+  // that allows us to create a new note
+  // (could be done in a separate component for a cleaner code)
+  // we need some state for the content and the title of the note
+  const [content, setContent] = useState('');
+  const [title, setTitle] = useState('');
 
-    const deleteNote = (id) => {
-        api
-            .delete(`/api/notes/delete/${id}/`)
-            .then((res) => {
-                if (res.status === 204) alert("Note deleted!");
-                else alert("Failed to delete note.");
-                getNotes();
-            })
-            .catch((error) => alert(error));
-    };
+  useEffect(() => {
+    getNotes();
+  }, []);
 
-    const createNote = (e) => {
-        e.preventDefault();
-        api
-            .post("/api/notes/", { content, title })
-            .then((res) => {
-                if (res.status === 201) alert("Note created!");
-                else alert("Failed to make note.");
-                getNotes();
-            })
-            .catch((err) => alert(err));
-    };
+  // functions to send requests
+  // e.g. to get all of the notes that the user has written
+  const getNotes = () => {
+    api
+      .get('/api/notes/')
+      .then((res) => res.data)
+      .then((data) => {
+        setNotes(data);
+        console.log(data);
+      })
+      .catch((err) => alert(err));
+  };
 
-    return (
-        <div>
-            <div>
-                <h2>Notes</h2>
-                {notes.map((note) => (
-                    <Note note={note} onDelete={deleteNote} key={note.id} />
-                ))}
-            </div>
-            <h2>Create a Note</h2>
-            <form onSubmit={createNote}>
-                <label htmlFor="title">Title:</label>
-                <br />
-                <input
-                    type="text"
-                    id="title"
-                    name="title"
-                    required
-                    onChange={(e) => setTitle(e.target.value)}
-                    value={title}
-                />
-                <label htmlFor="content">Content:</label>
-                <br />
-                <textarea
-                    id="content"
-                    name="content"
-                    required
-                    value={content}
-                    onChange={(e) => setContent(e.target.value)}
-                ></textarea>
-                <br />
-                <input type="submit" value="Submit"></input>
-            </form>
-        </div>
-    );
+  return <div>Home</div>;
 }
 
 export default Home;
