@@ -31,7 +31,8 @@ SECRET_KEY = "django-insecure-nma=xi6x2p-crjg^ifqqkapyu1qjd0l=+wn)-rijk_o%$!k3w_
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ["*"]
+#ALLOWED_HOSTS = ["*"]
+ALLOWED_HOSTS = ['langman.uber.space']
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": (
@@ -96,7 +97,7 @@ WSGI_APPLICATION = "backend.wsgi.application"
 # Database
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
-
+'''
 DATABASES = {
     "default": {
         "ENGINE": "django.db.backends.postgresql",
@@ -107,7 +108,7 @@ DATABASES = {
         "PORT": os.getenv("DB_PORT"),
     }
 }
-'''
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
@@ -115,6 +116,16 @@ DATABASES = {
     }
 }
 '''
+MYDB_CONFIG_PATH = os.path.join(BASE_DIR, '../mydb.cnf')
+DATABASES = {
+    "default": {
+        "ENGINE": "django.db.backends.mysql",
+        "OPTIONS": {
+            "read_default_file": MYDB_CONFIG_PATH,
+            'init_command': "SET sql_mode='STRICT_TRANS_TABLES'",
+        },
+    }
+}
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators

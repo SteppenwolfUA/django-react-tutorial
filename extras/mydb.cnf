@@ -1,0 +1,6 @@
+[client]
+database = langman
+user = langman
+password = 2jZgDHY_ayV:xeccgcab
+host = localhost
+default-character-set = utf8
